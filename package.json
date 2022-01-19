@@ -5,7 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "start": "babel-node src/index.js",
-    "dev": "nodemon --exec babel-node src/index.js"
+    "dev": "nodemon --exec babel-node src/index.js",
+    "seed": "sequelize db:seed:all",
+    "migrate": "sequelize db:migrate",
+    "migrate-refresh": "sequelize db:migrate:undo:all && npm run migrate",
+    "migrate-all": "npm run migrate-refresh && npm run seed"
   },
   "author": "",
   "license": "ISC",
@@ -14,13 +18,19 @@
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15"
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.13.0",
+    "sequelize-simple-cache": "^1.1.1",
+    "sequelize-transparent-cache": "^2.2.3",
+    "sequelize-transparent-cache-ioredis": "^2.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
     "@babel/core": "^7.16.7",
     "@babel/node": "^7.16.8",
     "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
-    "@babel/preset-env": "^7.16.8"
+    "@babel/preset-env": "^7.16.8",
+    "sequelize-cli": "^6.4.1"
   }
 }
