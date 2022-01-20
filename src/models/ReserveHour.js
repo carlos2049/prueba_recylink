@@ -7,10 +7,10 @@ export default class ReserveHour extends Sequelize.Model {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
       medicalId: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: 'medicals',
@@ -18,7 +18,7 @@ export default class ReserveHour extends Sequelize.Model {
         },
       },
       patientId: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: 'patients',
@@ -27,21 +27,21 @@ export default class ReserveHour extends Sequelize.Model {
       },
       date:{
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         defaultValue: new Date(),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         defaultValue: new Date(),
       },
       deletedAt: {
         allowNull: true,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     },
     {

@@ -1,13 +1,14 @@
-import res from 'express/lib/response'
-import cli from 'nodemon/lib/cli'
 import models from '../models'
 
 const { Medical } = models
 
 export const getMedicalsAll = async (req, res) => {
   try {
-
-    const getMedicals = await Medical.findAll()
+    const getMedicals = await Medical.findAll({
+      where:{
+        deletedAt: null
+      }
+    })
     res.status(200).json({success: true, getMedicals})
   } catch (error) {
     console.log(error)
@@ -17,9 +18,9 @@ export const getMedicalsAll = async (req, res) => {
 export const getMedicalById = async (req, res) => {
   try {
     const {id} = req.params
-    const getmedical = await Medical.findByPk(id);
-    if(getmedical){
-      res.status(200).json({success: true, getmedical})
+    const getMedical = await Medical.findByPk(id);
+    if(getMedical){
+      res.status(200).json({success: true, getMedical})
     }else{
       res.status(200).json({success: false, message: 'no se encuentra un medico asociado al Id'})
     }
@@ -54,8 +55,32 @@ export const deleteMedicalById = async (req, res) => {
     const {id} = req.params
     const findMedical = await Medical.findByPk(id);
     if(findMedical){
-      await findMedical.destroy()
-      res.status(200).json({success:true, message: 'registro del medico eliminado'})
+      await findMedical.update({
+        deletedAt: new Date()
+      })
+      res.status(200).json({success:true, message: 'Registro del medico eliminado'})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const updateMedicalById = async (req, res) => {
+  try {
+    const {id} = req.params
+    const {
+      name,
+      lastname,
+      rut
+    } = req.body
+
+    const findMedical = await Medical.findByPk(id);
+    if(findMedical){
+      await findMedical.update({
+        name,
+        lastname,
+        rut
+      })
+      res.status(200).json({success:true, message: 'Registro del medico actualizado'})
     }
   } catch (error) {
     console.log(error)
