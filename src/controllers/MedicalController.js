@@ -42,8 +42,21 @@ export const createMedical = async (req, res) => {
       lastname : lastname,
       rut
     })
-    
+
     res.status(200).json({success: true, createMedical})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteMedicalById = async (req, res) => {
+  try {
+    const {id} = req.params
+    const findMedical = await Medical.findByPk(id);
+    if(findMedical){
+      await findMedical.destroy()
+      res.status(200).json({success:true, message: 'registro del medico eliminado'})
+    }
   } catch (error) {
     console.log(error)
   }
