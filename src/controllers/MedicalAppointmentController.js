@@ -39,7 +39,7 @@ export const createMedicalAppointment = async (req, res) =>{
       return
     }
 
-    const findBookedAppointment = await MedicalAppointment.findAll({
+    const MedicalAppointmentFound = await MedicalAppointment.findAll({
       where:{
         medicalId,
         date: new Date(date),
@@ -47,12 +47,12 @@ export const createMedicalAppointment = async (req, res) =>{
         minutes
       }
     })
-    if(findBookedAppointment.length > 0){
+    if(MedicalAppointmentFound.length > 0){
       res.status(400).json({success: false, message: 'La cita para el medico ya esta ocupada en esta fecha y horario'})
       return
     }
 
-    const createMedical = await MedicalAppointment.create({
+    const MedicalAppointment = await MedicalAppointment.create({
       medicalId,
       patientId,
       date,
@@ -60,7 +60,7 @@ export const createMedicalAppointment = async (req, res) =>{
       minutes
     })
 
-    res.status(200).json({success: true, createMedical})
+    res.status(200).json({success: true, MedicalAppointment})
   } catch (error) {
     console.log(error)
   }
@@ -72,15 +72,15 @@ const validateDate = (date) =>{
     return 'debe contener una fecha de reserva'
   }
   
-  const validate = moment(date, 'YYYY-MM-DD',true).isValid()
-  if(!validate){
+  const dateValidated = moment(date, 'YYYY-MM-DD',true).isValid()
+  if(!dateValidated){
     return 'fecha no valida'
   }
 
   const today = moment().format('YYYY-MM-DD')
 
-  const isAfer = moment(date, 'YYYY-MM-DD').isAfter(today)
-  if(today === date || !isAfer){
+  const isAfer = moment(date, 'YYYY-MM-DD').isBefore(today)
+  if(isAfer){
     return 'fecha no debe ser menor a hoy'
   }
   return false

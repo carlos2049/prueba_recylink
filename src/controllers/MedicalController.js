@@ -51,13 +51,13 @@ export const createMedical = async (req, res) => {
       return
     }
 
-    const createMedical = await Medical.create({
+    const medical = await Medical.create({
       name,
       lastname : lastname,
       rut
     })
 
-    res.status(200).json({success: true, createMedical})
+    res.status(200).json({success: true, medical})
   } catch (error) {
     console.log(error)
   }
@@ -66,9 +66,9 @@ export const createMedical = async (req, res) => {
 export const deleteMedicalById = async (req, res) => {
   try {
     const {id} = req.params
-    const findMedical = await Medical.findByPk(id);
-    if(findMedical){
-      await findMedical.update({
+    const medical = await Medical.findByPk(id);
+    if(medical){
+      await medical.update({
         deletedAt: new Date()
       })
       res.status(200).json({success:true, message: 'Registro del medico eliminado'})
@@ -98,9 +98,9 @@ export const updateMedicalById = async (req, res) => {
       return
     }
 
-    const findMedical = await Medical.findByPk(id);
-    if(findMedical){
-      await findMedical.update({
+    const medical = await Medical.findByPk(id);
+    if(medical){
+      await medical.update({
         name,
         lastname,
         rut
