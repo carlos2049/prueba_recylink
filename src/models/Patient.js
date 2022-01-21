@@ -13,7 +13,7 @@ export default class Patient extends Sequelize.Model {
           type: DataTypes.STRING,
           allowNull: false
         },
-        lastName: {
+        lastname: {
           type:DataTypes.STRING,
           allowNull: false
         },
