@@ -97,6 +97,7 @@ export const cancelAppointment = async (req, res) =>{
       res.status(200).json({success:true, message: 'Registro eliminado'})
     }else{
       res.status(400).json({success:true, message: 'Registro no encontrado'})
+      
     }
   } catch (error) {
     console.log(error)
