@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-export default class ReserveHour extends Sequelize.Model {
+export default class MedicalAppointment extends Sequelize.Model {
   static init(sequelize, DataTypes) {
     return super.init({
       id: {
@@ -29,6 +29,14 @@ export default class ReserveHour extends Sequelize.Model {
         allowNull: false,
         type: DataTypes.DATE,
       },
+      hour:{
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      minutes:{
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -45,8 +53,8 @@ export default class ReserveHour extends Sequelize.Model {
       },
     },
     {
-      tableName: 'reserve_hours',
-      modelName: 'reserveHour',
+      tableName: 'medical_appointments',
+      modelName: 'medicalAppointment',
       sequelize,
       timestamps: false,
     },

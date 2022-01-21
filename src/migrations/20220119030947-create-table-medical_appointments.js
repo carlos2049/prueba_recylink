@@ -1,7 +1,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('reserve_hours', {
+    queryInterface.createTable('medical_appointments', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -28,6 +28,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      hour:{
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      minutes:{
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -43,5 +51,5 @@ module.exports = {
         type: Sequelize.DATE,
       },
     }),
-    down: (queryInterface, Sequelize) => queryInterface.dropTable('reserve_hours')
+    down: (queryInterface, Sequelize) => queryInterface.dropTable('medical_appointments')
 };
