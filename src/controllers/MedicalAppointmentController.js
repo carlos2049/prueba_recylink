@@ -12,37 +12,23 @@ export const createMedicalAppointment = async (req, res) =>{
       hour,
       minutes
     } = req.body
-    const findMedicalId = await Medical.findByPk(medicalId);
-    const findPatientId = await Patient.findByPk(patientId);
+    const medical = await Medical.findByPk(medicalId);
+    const patient = await Patient.findByPk(patientId);
 
-    if(!findMedicalId){
+    if(!medical){
       res.status(400).json({success: false, message: 'no se encuenta medico asociado al id'})
       return
     }
-    if(!findPatientId){
+    if(!patient){
       res.status(400).json({success: false, message: 'no se encuenta paciente asociado al id'})
       return
     }
-
-    if(!date){
-      res.status(400).json({success: false, message: 'debe contener una fecha de reserva'})
+    const dateValidated = validateDate(date)
+    if(dateValidated){
+      res.status(400).json({success: false, message: dateValidated})
       return
     }
     
-    const validate = moment(date, 'YYYY-MM-DD',true).isValid()
-    if(!validate){
-      res.status(400).json({success: false, message: 'fecha no valida'})
-      return
-    }
-
-    const today = moment().format('YYYY-MM-DD')
-
-    const isAfer = moment(date, 'YYYY-MM-DD').isAfter(today)
-    if(today === date || !isAfer){
-      res.status(400).json({success: false, message: 'fecha no debe ser menor a hoy'})
-      return
-    }
-
     if(Number(hour) > 19 || Number(hour) < 9 ){
       res.status(400).json({success: false, message: 'la hora debe ser mayor de las 9hr y menor de 19hr'})
       return
@@ -62,7 +48,7 @@ export const createMedicalAppointment = async (req, res) =>{
       }
     })
     if(findBookedAppointment.length > 0){
-      res.status(400).json({success: false, message: 'La cita para el medico ya esta ocupada'})
+      res.status(400).json({success: false, message: 'La cita para el medico ya esta ocupada en esta fecha y horario'})
       return
     }
 
@@ -75,6 +61,64 @@ export const createMedicalAppointment = async (req, res) =>{
     })
 
     res.status(200).json({success: true, createMedical})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+const validateDate = (date) =>{
+  if(!date){
+    return 'debe contener una fecha de reserva'
+  }
+  
+  const validate = moment(date, 'YYYY-MM-DD',true).isValid()
+  if(!validate){
+    return 'fecha no valida'
+  }
+
+  const today = moment().format('YYYY-MM-DD')
+
+  const isAfer = moment(date, 'YYYY-MM-DD').isAfter(today)
+  if(today === date || !isAfer){
+    return 'fecha no debe ser menor a hoy'
+  }
+  return false
+}
+
+export const cancelAppointment = async (req, res) =>{
+  try {
+    const {id} = req.params
+    const medicalAppointment = await MedicalAppointment.findByPk(id);
+    if(medicalAppointment){
+      await medicalAppointment.update({
+        deletedAt: new Date()
+      })
+      res.status(200).json({success:true, message: 'Registro eliminado'})
+    }else{
+      res.status(400).json({success:true, message: 'Registro no encontrado'})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const findAllAppointmentsByMedical = async (req, res) => {
+  try {
+    const {medical} = req.query
+    
+    const medicalAppointmentt = await MedicalAppointment.findAll({
+      where:{
+        medicalId: medical,
+        deletedAt: null
+      }
+    });
+    if(medicalAppointmentt){
+      res.status(200).json({success: true, medicalAppointmentt})
+    }else{
+      res.status(400).json({success: false, message: 'no se encuentra un medico asociado al Id'})
+    }
+    
   } catch (error) {
     console.log(error)
   }

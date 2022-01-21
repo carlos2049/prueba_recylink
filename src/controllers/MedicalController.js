@@ -4,12 +4,12 @@ const { Medical } = models
 
 export const getMedicalsAll = async (req, res) => {
   try {
-    const getMedicals = await Medical.findAll({
+    const medicals = await Medical.findAll({
       where:{
         deletedAt: null
       }
     })
-    res.status(200).json({success: true, getMedicals})
+    res.status(200).json({success: true, medicals})
   } catch (error) {
     console.log(error)
   }
@@ -22,7 +22,7 @@ export const getMedicalById = async (req, res) => {
     if(getMedical){
       res.status(200).json({success: true, getMedical})
     }else{
-      res.status(200).json({success: false, message: 'no se encuentra un medico asociado al Id'})
+      res.status(400).json({success: false, message: 'no se encuentra un medico asociado al Id'})
     }
     
   } catch (error) {
@@ -37,6 +37,19 @@ export const createMedical = async (req, res) => {
       lastname,
       rut
     } = req.body
+
+    if(!name){
+      res.status(400).json({success: false, message: 'Debe ingresar un nombre'})
+      return
+    }
+    if(!lastname){
+      res.status(400).json({success: false, message: 'Debe ingresar un apellido'})
+      return
+    }
+    if(!rut){
+      res.status(400).json({success: false, message: 'Debe ingresar rut'})
+      return
+    }
 
     const createMedical = await Medical.create({
       name,
@@ -72,6 +85,18 @@ export const updateMedicalById = async (req, res) => {
       lastname,
       rut
     } = req.body
+    if(!name){
+      res.status(400).json({success: false, message: 'Debe ingresar un nombre'})
+      return
+    }
+    if(!lastname){
+      res.status(400).json({success: false, message: 'Debe ingresar un apellido'})
+      return
+    }
+    if(!rut){
+      res.status(400).json({success: false, message: 'Debe ingresar rut'})
+      return
+    }
 
     const findMedical = await Medical.findByPk(id);
     if(findMedical){

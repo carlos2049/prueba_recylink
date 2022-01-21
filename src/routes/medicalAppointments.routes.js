@@ -1,18 +1,18 @@
 import express from 'express';
 import {
   // getMedicalsAll,
-  // getMedicalById,
+  findAllAppointmentsByMedical,
   createMedicalAppointment,
-  // deleteMedicalById,
+  cancelAppointment,
   // updateMedicalById
 } from '../controllers/MedicalAppointmentController';
 
 const router = express.Router();
 
 // router.get('/', getMedicalsAll);
-// router.get('/:id', getMedicalById);
+router.get('/', findAllAppointmentsByMedical);
 router.post('/', createMedicalAppointment);
 // router.put('/:id', updateMedicalById);
-// router.delete('/:id', deleteMedicalById);
+router.delete('/:id', cancelAppointment);
 
 export default router;

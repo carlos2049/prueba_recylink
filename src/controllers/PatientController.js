@@ -4,12 +4,12 @@ const { Patient } = models
 
 export const getPatientsAll = async (req, res)  => {
   try {
-    const getPatiens = await Patient.findAll({
+    const patients = await Patient.findAll({
       where:{
         deletedAt: null
       }
     })
-    res.status(200).json({success: true, getPatiens})
+    res.status(200).json({success: true, patients})
   } catch (error) {
     console.log(error)
   }
@@ -18,9 +18,9 @@ export const getPatientsAll = async (req, res)  => {
 export const getPatientById = async (req, res) => {
   try {
     const {id} = req.params
-    const getPatient = await Patient.findByPk(id);
-    if(getPatient){
-      res.status(200).json({success: true, getPatient})
+    const patient = await Patient.findByPk(id);
+    if(patient){
+      res.status(200).json({success: true, patient})
     }else{
       res.status(200).json({success: false, message: 'no se encuentra un paciente asociado al Id'})
     }
@@ -38,13 +38,13 @@ export const createPatient = async (req, res) => {
       rut
     } = req.body
 
-    const createPatient = await Patient.create({
+    const patient = await Patient.create({
       name,
       lastname,
       rut
     })
 
-    res.status(200).json({success: true, createPatient})
+    res.status(200).json({success: true, patient})
   } catch (error) {
     console.log(error)
   }
@@ -53,9 +53,9 @@ export const createPatient = async (req, res) => {
 export const deletePatientById = async (req, res) => {
   try {
     const {id} = req.params
-    const findPatient = await Patient.findByPk(id);
-    if(findPatient){
-      await findPatient.update({
+    const patient = await Patient.findByPk(id);
+    if(patient){
+      await patient.update({
         deletedAt: new Date()
       })
       res.status(200).json({success:true, message: 'Registro del paciente eliminado'})
@@ -74,9 +74,9 @@ export const updatePatientById = async (req, res) => {
       rut
     } = req.body
 
-    const findPatient = await Patient.findByPk(id);
-    if(findPatient){
-      await findPatient.update({
+    const patient = await Patient.findByPk(id);
+    if(patient){
+      await patient.update({
         name,
         lastname,
         rut
