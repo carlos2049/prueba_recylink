@@ -38,6 +38,16 @@ export const createPatient = async (req, res) => {
       rut
     } = req.body
 
+    const patientRut = await Patient.findAll({
+      where:{
+        rut
+      }
+    })
+    if(patientRut.length > 0){
+      res.status(400).json({success: false, message: 'Rut paciente ya existe'})
+      return
+    } 
+
     const patient = await Patient.create({
       name,
       lastname,

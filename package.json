@@ -8,8 +8,7 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "seed": "sequelize db:seed:all",
     "migrate": "sequelize db:migrate",
-    "migrate-refresh": "sequelize db:migrate:undo:all && npm run migrate",
-    "migrate-all": "npm run migrate-refresh && npm run seed"
+    "migrate-refresh": "sequelize db:migrate:undo:all && npm run migrate"
   },
   "author": "",
   "license": "ISC",

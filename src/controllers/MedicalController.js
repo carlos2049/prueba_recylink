@@ -51,6 +51,16 @@ export const createMedical = async (req, res) => {
       return
     }
 
+    const medicalRut = await Medical.findAll({
+      where:{
+        rut
+      }
+    })
+
+    if(medicalRut.length > 0){
+      res.status(400).json({success: false, message: 'Rut medico ya existe'})
+      return
+    } 
     const medical = await Medical.create({
       name,
       lastname : lastname,
@@ -85,18 +95,6 @@ export const updateMedicalById = async (req, res) => {
       lastname,
       rut
     } = req.body
-    if(!name){
-      res.status(400).json({success: false, message: 'Debe ingresar un nombre'})
-      return
-    }
-    if(!lastname){
-      res.status(400).json({success: false, message: 'Debe ingresar un apellido'})
-      return
-    }
-    if(!rut){
-      res.status(400).json({success: false, message: 'Debe ingresar rut'})
-      return
-    }
 
     const medical = await Medical.findByPk(id);
     if(medical){
